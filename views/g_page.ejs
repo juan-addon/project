@@ -1,0 +1,235 @@
+<%- include('partials/header.ejs') %>
+<body>
+  <%- include('partials/navbar.ejs') %>
+    <div class="container-fluid" id="grad1">
+      <div class="row justify-content-center mt-0">
+        <% if(user?.licenseNumber) { %>
+        <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
+          <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+            <div class="py-5">
+              <h2 class="mb-3">G Road Test Booking Appointment Details</h2>
+              <p class="lead">Please check/update your information.</p>
+            </div>
+            <div class="row  g-5 mx-5">
+              <div class="col-md-2"></div>
+              <div class="col-md-8 card shadow rounded-3  bg-light bg-gradient">
+                <div class="form-card p-4 p-sm-5">
+                  <h4 class="m-3">Personal Information</h4>
+                  <p class="m-3">First Name: <b><%= user?.firstName %></b></p>
+                  <p class="m-3">Last Name: <b><%= user?.lastName %></b></p>
+                  <p class="m-3">License Number: <b><%= user?.licenseNumber %></b></p>
+                  <p class="m-3">Age: <b><%= user?.age %></b></p>
+                </div>
+              </div>
+              <div class="col-md-2"></div>
+            </div>
+
+            <form action="/g_page_confirm" method="post">
+
+            <div class="row  g-5 mx-5 mt-2">
+              <div class="col-md-2"></div>
+              <div class="col-md-8 card shadow rounded-3  bg-light bg-gradient mb-5">
+                <div class="form-card p-4 p-sm-5">
+                  <h4 class="m-3">Car Information</h4>
+                 
+                    <div class="form-floating mb-3">
+                      <input
+                        type="text"
+                        id="txtLicenseNumber"
+                        value="<%= user?.carDetail?.make %>"
+                        name="txtMake"
+                        class="form-control"
+                      />
+                      <label>Make</label>
+                    </div>
+      
+                    <div class="form-floating mb-3">
+                      <input
+                        type="text"
+                        id="txtLicenseNumber"
+                        value="<%= user?.carDetail?.model %>"
+                        name="txtModel"
+                        class="form-control"
+                      />
+                      <label>Model</label>
+                    </div>
+      
+                    <div class="form-floating mb-3">
+                      <input
+                        type="text"
+                        id="txtLicenseNumber"
+                        value="<%= user?.carDetail?.year %>"
+                        name="txtYear"
+                        class="form-control"
+                      />
+                      <label>Year</label>
+                    </div>
+      
+                    <div class="form-floating mb-3">
+                      <input
+                        type="text"
+                        id="txtLicenseNumber"
+                        value="<%= user?.carDetail?.plateNumber %>"
+                        name="txtPlateNumber"
+                        class="form-control"
+                      />
+                      <label>Plate Number</label>
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-2 mb-2"></div>
+            </div>
+
+
+            <div class="row  g-5 mx-5">
+              <div class="col-md-2"></div>
+              <div class="col-md-8 card shadow rounded-3  bg-light bg-gradient mb-5">
+                <div class="form-card p-4 p-sm-5">
+                  <h4 class="m-3">Drive Test (Availability)</h4>
+                 <!-- Booking Schedule section -->
+                  <div class="form-card">
+
+                    <% if(user?.timeSlot?.G2Exam?.resultStatus == "" || user?.timeSlot?.G2Exam?.resultStatus == null) { %>
+                      <div class="p-3 mb-2 bg-danger text-white">
+                        <h3 class="card-title text-center fw-light fs-5">
+                          <b>You must complete your G2 Exam to be able to take G Exam.</b>
+                        </h3>
+                      </div>
+                    <% } else if(user?.timeSlot?.GExam?.slotTime == "" || user?.timeSlot?.GExam?.slotTime == null) { %>
+                      <div class="mb-3">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="date"
+                            name="txtDate"
+                            id="txtDate"
+                            class="form-control"
+                            value="<%=(new Date()).toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%>"
+                            required
+                            pattern="\d{4}-\d{2}-\d{2}"
+                          />
+                          <label for="floatingPassword" style="margin: 0px 0px 0px 10px">Date</label>
+                        </div>
+                        <br />
+                        <br />
+                    <% } else{ %>
+                      <h3 class="fs-title">Date</h3>
+                      <div class="form-floating mb-3">
+                        <h5><%=user?.timeSlot?.GExam?.slotDate %></h5>
+                      </div>
+                      <br />
+                      <br />
+                    <% }  %>
+
+
+                    <% if(user?.timeSlot?.GExam?.slotTime == "" || user?.timeSlot?.GExam?.slotTime == null) { %>
+                      <% if(user?.timeSlot?.G2Exam?.resultStatus != "") { %>
+                        <h4 class="m-4">Availability</h4>
+                        <div class="row" id="SlotsItems"></div>
+                      <% }  %>
+                    <% } else{ %>
+
+                      <% if(user?.timeSlot?.GExam?.resultStatus != "") { %>
+
+                        <p class="m-3">Result: <b><%= user?.timeSlot?.GExam?.resultStatus %></b></p>
+                        <p class="m-3">Comment: <b><%= user?.timeSlot?.GExam?.resultComment %></b></p>
+
+                        <% } else{ %>
+                          <h2 class="fs-title">Time selected</h2>
+                          <input type="radio" class="btn-check" checked name="slot" id="success-outlined" autocomplete="off" disabled>
+                          <label  style="width: 150px" class="btn btn-outline-success" for="success-outlined"><%=user?.timeSlot?.GExam?.slotTime %></label>
+                        <% }  %>
+                      <% }  %>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-md-2 mb-2"></div>
+            </div>
+        <% } %>
+        </div>
+
+      <div class="row  g-5 mx-5 mb-5">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <div class="form-card p-4 p-sm-5">
+            <% if(locals.updated) { %>
+              <div class="p-3 mb-2 bg-primary text-white">
+                <h3 class="card-title text-center fw-light fs-5">
+                  <b>Information updated successfully.</b>
+                </h3>
+              </div>
+              <% }else{ %>
+
+                <% if(user?.timeSlot?.GExam?.slotTime == "" || user?.timeSlot?.GExam?.slotTime == null) { %>
+                  <div class="mb-3 mt-3">
+                    <input type="submit" class="w-100 btn btn-lg btn-primary action-button btn-login" value="Confirm"/>
+                  </div>
+                <% }  %>
+      
+              <% } %>
+
+          </div>
+        </div>
+      </div>
+    </form>
+
+    </div>
+    <%- include('partials/footer.ejs') %>
+  </body>
+</html>
+
+
+<%- include('partials/scripts') %>
+<script>
+  $(function () {
+    $("#txtDate").change();
+  });
+
+  $("#txtDate").on("change", async function () {
+    await changeDropdownDataSet(this.value);
+  });
+
+  const changeDropdownDataSet = async (InputDate) => {
+    let serverSourceLink = "/GetSlotAvailableForDriver";
+    console.log(InputDate);
+
+    let sourceOptions = '<option value="">Select ServerUrl...</option>';
+    $.ajax({
+      type: "POST",
+      url: serverSourceLink,
+      data: JSON.stringify({ InputDate: InputDate }),
+      contentType: "application/json",
+      dataType: "json",
+      success: function (data, status) {
+        var i = 1;
+        $("#SlotsItems").empty();
+
+        if (data.length == 0) {
+          $("#SlotsItems").append(`
+          <div class="p-3 mb-2 bg-danger text-white">
+            <h3 class="card-title text-center fw-light fs-5">
+              <b>For the entered date, there is no availability.</b>
+            </h3>
+          </div>`);
+        } else {
+          for (let sources of data) {
+            console.log(data);
+
+            $("#SlotsItems").append(`
+            <div class="col-lg-3">
+              <input type="radio" class="btn-check" value="${sources._id}" name="slot" id="success-outlined${i}" autocomplete="off">
+              <label  style="width: 80px;" class="btn btn-outline-success" for="success-outlined${i}">${sources.Time}</label>
+            </div>
+          `);
+            i++;
+          }
+        }
+      },
+      error: function (error) {
+        jsonValue = jQuery.parseJSON(error.responseText);
+        alert("error" + error.responseText);
+      },
+    });
+  };
+
+</script>

@@ -1,0 +1,99 @@
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 text-bg-dark">
+  <div class="container">
+    <a
+      href="/"
+      class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+    >
+      <h1>Book Drive Test</h1>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-white px-5" aria-current="page" href="/"
+            >Home</a
+          >
+        </li>
+
+        <% if(user?.userName) { %> <% if(user?.userType == "Driver") { %>
+        <li class="nav-item">
+          <a class="nav-link text-white px-3" href="/g2_page">G2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white px-5" href="/g_page">G</a>
+        </li>
+        <li class="nav-item">
+          <button
+            type="button"
+            class="btn btn-danger"
+            onclick="document.location.href='/logout'"
+          >
+            Logout
+          </button>
+        </li>
+        <% } %> <% if(user?.userType == "Admin") { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/Appointment">APPOINTMENTS</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/CandidatesResult">PASS/FAIL CANDIDATES</a>
+        </li>
+
+        <li class="nav-item">
+          <button
+            type="button"
+            class="btn btn-danger"
+            onclick="document.location.href='/logout'"
+          >
+            Logout
+          </button>
+        </li>
+
+        <% } %> <% if(user?.userType == "Examiner") { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/examiner">EXAMINER</a>
+        </li>
+
+        <li class="nav-item">
+          <button
+            type="button"
+            class="btn btn-danger"
+            onclick="document.location.href='/logout'"
+          >
+            Logout
+          </button>
+        </li>
+
+        <% } %> <% } else { %>
+        <li class="nav-item">
+          <button
+            type="button"
+            class="btn btn-outline-light me-2"
+            onclick="document.location.href='/login'"
+          >
+            Login
+          </button>
+          <button
+            type="button"
+            class="btn btn-warning"
+            onclick="document.location.href='/login'"
+          >
+            Sign-up
+          </button>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>

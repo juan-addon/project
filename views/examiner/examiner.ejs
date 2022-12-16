@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <%- include('../partials/header') %>
+
+    <style>
+      .checked {
+        background-color: #6c757d;
+        color: aliceblue;
+        border-color: "#6c757d";
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include('../partials/navbar') %>
+
+    <div class="container">
+      <div class="row">
+        <% if(locals.error) { %>
+        <div class="p-3 text-white mx-auto">
+          <div
+            class="col-sm-9 col-md-7 col-lg-5 mx-auto bg-danger card border-0 shadow rounded-3 my-5"
+          >
+            <h3 class="card-title text-center fw-light fs-5">
+              <b><%= error %></b>
+            </h3>
+          </div>
+        </div>
+        <% } %>
+
+        <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+          <div class="">
+            <div class="card-body p-4 p-sm-5">
+              <div class="row">
+                <div class="form-floating mb-3">
+                  <select class="form-control" name="txtTesType" id="txtTesType" required>
+                    <option>All</option>
+                    <option>G2</option>
+                    <option>G</option>
+                  </select>
+                  <label for="floatingInput">Test Type</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-10 col-md-10 col-lg-10 mx-auto">
+          <div class="card border-0 shadow rounded-3 my-5">
+            <div class="card-body p-4 p-sm-5">
+              <div class="row" id="TestType">
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<%- include('../partials/scripts') %>
+
+<script>
+  $(function () {
+    $("#txtTesType").change();
+  });
+
+  $("#txtTesType").on("change", async function () {
+    await changeDropdownDataSet(this.value);
+  });
+
+  const changeDropdownDataSet = async (TestType) => {
+    let serverSourceLink = "/GetAvailableTests";
+
+    $.ajax({
+      type: "POST",
+      url: serverSourceLink,
+      data: JSON.stringify({ TestType: TestType }),
+      contentType: "application/json",
+      dataType: "json",
+      success: function (data, status) {
+        var i = 1;
+        $("#TestType").empty();
+        
+        if(data.length == 0 ){
+            $("#TestType").append(`
+                <div class="card border-dark mx-auto mx-5 mb-5" style="max-width: 18rem;">
+                    <div class="card-body text-dark">
+                      <h5 class="card-title">No pending exam found for today.</h5>
+                    </div>
+                    <div class="card-footer bg-transparent border-success"> 
+                    </div>
+                </div>
+            `);
+        }
+        for (let sources of data) {
+
+          var hour = sources.timeSlot.GExam.slotTime == ""? sources.timeSlot.G2Exam.slotTime: sources.timeSlot.GExam.slotTime;
+          
+            $("#TestType").append(`
+                <div class="card border-dark mx-auto mx-5 mb-5" style="max-width: 18rem;">
+                    <div class="card-header"><label class="card-title">Driver: ${sources.firstName} ${sources.lastName}</label></div>
+                    <div class="card-body text-dark">
+                      <h5 class="card-title">Hour: ${hour} </h5>
+                      <p class="card-text">Test Type: ${sources?.TestType}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-success"> 
+                        <a href="/DriverDetailExaminer/${sources._id}" class="btn btn-primary">Detail</a>
+                    </div>
+                </div>
+            `);
+
+            i++;
+        }
+      },
+      error: function (error) {
+        jsonValue = jQuery.parseJSON(error.responseText);
+        alert("error" + error.responseText);
+      },
+    });
+  };
+</script>

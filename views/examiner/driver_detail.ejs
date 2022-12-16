@@ -1,0 +1,100 @@
+<%- include('../partials/header.ejs') %>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+    <div class="container-fluid" id="grad1">
+      <div class="row justify-content-center mt-0">
+        <% if(locals.success) { %>
+            <div class="col-11 col-sm-10 col-md-10 col-lg-10 text-center p-0 mt-3 mb-2">
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                <div class="py-5">
+                <h2 class="mb-3">G Road Test Booking Appointment Details</h2>
+                <p class="lead">Please check/update your information.</p>
+                </div>
+                <div class="row  g-5 mx-5">
+
+                <div class="col-md-1"></div>
+
+                <div class="col-md-4 card shadow rounded-3  bg-light bg-gradient mx-auto mx-5 mb-5">
+                    <div class="form-card p-2 p-sm-2">
+                        <h4 class="m-3">Personal Information</h4>
+                        <p class="m-3">First Name: <b><%= success?.firstName %></b></p>
+                        <p class="m-3">Last Name: <b><%= success?.lastName %></b></p>
+                        <p class="m-3">License Number: <b><%= success?.licenseNumber %></b></p>
+                        <p class="m-3">Age: <b><%= success?.age %></b></p>
+                        <p class="m-3">Appoitment Date: <b><%= success?.timeSlot?.slotDate %></b></p>
+                        <p class="m-3">Appoitment Time: <b><%= success?.timeSlot?.slotTime %></b></p>
+                    </div>
+                </div>
+
+                <div class="col-md-2"></div>
+
+                <div class="col-md-4 card shadow rounded-3  bg-light bg-gradient mx-auto mx-5 mb-5">
+                    <div class="form-card p-2 p-sm-2">
+                        <h4 class="m-3">Car Information</h4>
+                        <p class="m-3">Make: <b><%= success?.carDetail.make %></b></p>
+                        <p class="m-3">Model: <b><%= success?.carDetail.model %></b></p>
+                        <p class="m-3">Year: <b><%= success?.carDetail.year %></b></p>
+                        <p class="m-3">Plate Number: <b><%= success?.carDetail.plateNumber %></b></p>
+                    </div>
+                </div>
+
+                <div class="col-md-1"></div>
+                </div>
+
+            </div>
+
+
+
+
+
+
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                <div class="py-5">
+                <h2 class="mb-3">G Road Test Result</h2>
+                </div>
+                <div class="row  g-5 mx-5">
+
+                <div class="col-md-2"></div>
+
+                <div class="col-md-4 card shadow rounded-3  bg-light bg-gradient mx-auto mx-5 mb-5">
+                    <form id="msEvaluationForm" class="mb-3" action="/SaveEvaluation" method="post">
+                        <div class="form-card p-2 p-sm-2">
+                            <h4 class="m-3">Final Result</h4>
+                            <input type="hidden" name="txtDriverId" value="<%= success?._id %>" />
+                            <input type="hidden" name="txtExamType" value="<%= success?.TestType %>" />
+                            
+
+                            <input type="radio" class="btn-check mt-3 mb-3" value="1" name="txtResult" id="success-outlined" autocomplete="off" checked>
+                            <label class="btn btn-outline-success" for="success-outlined">Passed</label>
+
+                            <input type="radio" class="btn-check mt-3 mb-3" value="0" name="txtResult" id="danger-outlined" autocomplete="off">
+                            <label class="btn btn-outline-danger" for="danger-outlined">Reprobate</label>
+
+                            <div class="form-floating mb-3 mt-3">
+                                <input
+                                type="text"
+                                name="txtComment"
+                                class="form-control"
+                                id="floatingInput"
+                                placeholder="Comment"
+                                required
+                                />
+                                <label for="floatingInput">Comment</label>
+                            </div>
+
+                            <button class="w-100 btn btn-lg btn-primary btn-login" type="submit">Send Evaluation</button>
+
+                        </div>                 
+                    </form>
+                </div>
+
+                <div class="col-md-2"></div>
+
+            </div>
+        <% } %>
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>

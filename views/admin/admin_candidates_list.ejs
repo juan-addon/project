@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <%- include('../partials/header') %>
+
+    <style>
+      .checked {
+        background-color: #6c757d;
+        color: aliceblue;
+        border-color: "#6c757d";
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include('../partials/navbar') %>
+
+    <form id="appointmen" action="/SaveAppointmentSlot" method="post">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-5">
+              <div class="card-body p-4 p-sm-5">
+                <div class="row">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Driver</th>
+                        <th scope="col">License Number</th>
+                        <th scope="col">Exam Date</th>
+                        <th scope="col">Result</th>
+                        <th scope="col">Comment</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% success.forEach(function(user, i){ %>
+                        <tr>
+                            <td><%= user.firstName %> <%= user.lastName %></td>
+                            <td><%= user.licenseNumber %></td>
+                            <td>G2: <%= user.timeSlot?.G2Exam?.slotDate %>  </td>
+                            <td>G2: <%= user.timeSlot?.G2Exam?.resultStatus %>  </td>
+                            <td>G2: <%= user.timeSlot?.G2Exam?.resultComment %></td>
+                        </tr>
+                        <% }); %>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
+
+<%- include('../partials/scripts') %>

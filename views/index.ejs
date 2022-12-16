@@ -1,0 +1,19 @@
+<%- include('partials/header.ejs') %>
+  <body>
+      <%- include('partials/navbar.ejs') %>
+      <div class="bg-dark text-secondary px-4 py-5 text-center">
+          <div class="py-5">
+            <h1 class="display-5 fw-bold text-white">Dashboard</h1>
+            <div class="col-lg-6 mx-auto">
+              <p class="fs-5 mb-4">DriveTest Booking Kiosk</p>
+              <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-5">
+                <button type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" onclick="document.location.href='/login'">Book a Road Test</button>
+                <button type="button" class="btn btn-outline-light btn-lg px-4" onclick="document.location.href='/login'">Driver's Licenses</button>
+              </div>
+              <p class="fs-5 mb-4 mt-5">You can book G2/G drive test from this Kiosk</p>
+            </div>
+          </div>
+      </div>
+      <%- include('partials/footer.ejs') %>
+  </body>
+</html>
